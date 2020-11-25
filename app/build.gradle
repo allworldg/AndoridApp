@@ -6,6 +6,9 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
     useLibrary 'org.apache.http.legacy'//bmob setting
+    buildFeatures{
+        viewBinding true //开启视图绑定
+    }
     defaultConfig {
         applicationId "com.example.zhuangzu"
         minSdkVersion 16
