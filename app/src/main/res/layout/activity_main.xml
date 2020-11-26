@@ -5,5 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    android:background="@drawable/shadow"
+    app:layout_constraintTop_toTopOf="parent">
 
+    <ImageView
+        android:id="@+id/left_slide"
+        android:layout_width="?actionBarSize"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:scaleType="center"
+        android:src="@drawable/column" />
+
+    <ImageView
+        android:id="@+id/right_slide"
+        android:layout_width="?actionBarSize"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:scaleType="center"
+        android:src="@drawable/person" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="单  读"
+        android:textColor="@android:color/white" />
+</RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
