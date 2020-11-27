@@ -8,5 +8,6 @@
     <dimen name="parallax_image_height">230dp</dimen>
 
     <dimen name="setting_menu_item_height">42.0dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>
