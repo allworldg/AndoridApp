@@ -7,60 +7,73 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 
 import com.example.zhuangzu.R;
+import com.example.zhuangzu.databinding.FragmentRightMenuBinding;
+import com.example.zhuangzu.databinding.RightMenuBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RightMenuFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class RightMenuFragment extends Fragment {
+import java.util.ArrayList;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public RightMenuFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RightMenuFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RightMenuFragment newInstance(String param1, String param2) {
-        RightMenuFragment fragment = new RightMenuFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+public class RightMenuFragment extends Fragment implements View.OnClickListener {
+    private FragmentRightMenuBinding fragmentRightMenuBinding;
+    private ArrayList<View> mViewList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_right_menu, container, false);
+        fragmentRightMenuBinding = FragmentRightMenuBinding.inflate(inflater, container, false);
+        loadView();
+        fragmentRightMenuBinding.rightSlideClose.setOnClickListener(this);
+        return fragmentRightMenuBinding.getRoot();
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.right_slide_close:
+                getActivity().onBackPressed();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void loadView() {
+        mViewList.add(fragmentRightMenuBinding.notificationTv);
+        mViewList.add(fragmentRightMenuBinding.favoritesTv);
+        mViewList.add(fragmentRightMenuBinding.downloadTv);
+        mViewList.add(fragmentRightMenuBinding.noteTv);
+    }
+
+    public void startAnim() {
+        startIconAnim(fragmentRightMenuBinding.rightSlideClose);
+        startIconAnim(fragmentRightMenuBinding.setting);
+        startColumnAnim();
+    }
+
+    private void startColumnAnim() {
+        TranslateAnimation localTranslateAnimation = new TranslateAnimation(0F, 0.0F, 0.0F, 0.0F);
+        localTranslateAnimation.setDuration(700L);
+        for (int j = 0; j < mViewList.size(); j++) {
+            View localView = this.mViewList.get(j);
+            localView.startAnimation(localTranslateAnimation);
+            localTranslateAnimation = new TranslateAnimation(j * 35, 0.0F, 0.0F, 0.0F);
+            localTranslateAnimation.setDuration(700L);
+        }
+    }
+
+    private void startIconAnim(View paramView) {
+        ScaleAnimation localScaleAnimation = new ScaleAnimation(0.1F, 1.0F, 0.1F, 1.0F, paramView.getWidth() / 2, paramView.getHeight() / 2);
+        localScaleAnimation.setDuration(1000L);
+        paramView.startAnimation(localScaleAnimation);
+        float f1 = paramView.getWidth() / 2;
+        float f2 = paramView.getHeight() / 2;
+        localScaleAnimation = new ScaleAnimation(1.0F, 0.5F, 1.0F, 0.5F, f1, f2);
+        localScaleAnimation.setInterpolator(new BounceInterpolator());
+    }
+
 }
