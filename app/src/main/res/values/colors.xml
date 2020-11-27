@@ -32,5 +32,5 @@
     <color name="article_page_text_select_bg">#ffebe1c4</color>
     <color name="article_page_textcolor_select_text">#ff000000</color>
     <color name="article_page_textcolor_selected">#ffad8a5a</color>
-
+    <color name ="login_button">#CD853F</color>
 </resources>

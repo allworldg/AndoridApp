@@ -1,4 +1,4 @@
-package com.example.zhuangzu;
+package com.example.zhuangzu.view.activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,17 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.zhuangzu.bean.User;
+import com.example.zhuangzu.R;
 import com.example.zhuangzu.databinding.ActivityMainBinding;
-import com.example.zhuangzu.fragment.LeftMenuFragment;
-import com.example.zhuangzu.fragment.RightMenuFragment;
+import com.example.zhuangzu.view.fragment.LeftMenuFragment;
+import com.example.zhuangzu.view.fragment.RightMenuFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
-import java.util.List;
-
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private ActivityMainBinding mainBinding;

@@ -1,5 +1,6 @@
-package com.example.zhuangzu.fragment;
+package com.example.zhuangzu.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,7 +14,7 @@ import android.view.animation.TranslateAnimation;
 
 import com.example.zhuangzu.R;
 import com.example.zhuangzu.databinding.FragmentRightMenuBinding;
-import com.example.zhuangzu.databinding.RightMenuBinding;
+import com.example.zhuangzu.view.activity.LoginActivity;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
         fragmentRightMenuBinding = FragmentRightMenuBinding.inflate(inflater, container, false);
         loadView();
         fragmentRightMenuBinding.rightSlideClose.setOnClickListener(this);
+        fragmentRightMenuBinding.loginTv.setOnClickListener(this);
         return fragmentRightMenuBinding.getRoot();
     }
 
@@ -37,13 +39,16 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
             case R.id.right_slide_close:
                 getActivity().onBackPressed();
                 break;
+            case R.id.login_tv:
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
             default:
                 break;
         }
     }
 
     private void loadView() {
-        mViewList.add(fragmentRightMenuBinding.notificationTv);
+        mViewList.add(fragmentRightMenuBinding.loginTv);
         mViewList.add(fragmentRightMenuBinding.favoritesTv);
         mViewList.add(fragmentRightMenuBinding.downloadTv);
         mViewList.add(fragmentRightMenuBinding.noteTv);

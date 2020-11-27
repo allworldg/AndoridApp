@@ -16,14 +16,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Zhuangzu">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".view.activity.LoginActivity"></activity>
+        <activity android:name=".view.activity.MainActivity" />
 
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
-            android:authorities="com.example.zhuangzu.BmobContentProvider"></provider>
+            android:authorities="com.example.zhuangzu.BmobContentProvider" />
 
-        <activity android:name=".SplashActivity"
-                  >
+        <activity android:name=".view.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

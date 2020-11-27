@@ -1,4 +1,4 @@
-package com.example.zhuangzu;
+package com.example.zhuangzu.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 
 import com.example.zhuangzu.databinding.ActivitySplashBinding;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import cn.bmob.v3.Bmob;
 

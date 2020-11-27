@@ -1,4 +1,4 @@
-package com.example.zhuangzu.fragment;
+package com.example.zhuangzu.view.fragment;
 
 import android.os.Bundle;
 

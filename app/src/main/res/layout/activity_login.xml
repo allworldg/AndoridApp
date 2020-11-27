@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/theme_bg_color_black"
+    tools:context=".view.activity.LoginActivity">
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/right_slide_close"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:scaleType="center"
+            android:src="@drawable/fork" />
+
+        <TextView
+            android:id="@+id/right_login"
+            style="@style/MenuColunmStyle"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:text="登   陆"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/signup"
+            style="@style/MenuColunmStyle"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:text="注册"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_bar">
+
+        <TextView
+            style="@style/MenuColunmStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="280dp"
+            android:layout_marginTop="70dp"
+            android:text="找回密码"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_login_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="48dp"
+            android:background="@drawable/yuanjiaobiankuang"
+            android:hint="账号"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/et_login_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="170dp"
+            android:layout_marginEnd="48dp"
+            android:background="@drawable/yuanjiaobiankuang"
+            android:hint="密码"
+            android:inputType="textPassword" />
+
+
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_login_password"
+            android:layout_marginLeft="90dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="90dp"
+            android:gravity="center"
+            android:text="登陆"
+            android:background="@drawable/yuanjiaobiankuang_orange"
+            app:backgroundTint="@null"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

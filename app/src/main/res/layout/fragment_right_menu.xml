@@ -52,7 +52,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/notification_tv"
+        android:id="@+id/login_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/user_ll"
@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/favorites_tv"
-        android:layout_below="@id/notification_tv"
+        android:layout_below="@id/login_tv"
         style="@style/MenuColunmStyle"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18.0dip"
@@ -95,8 +95,8 @@
         android:id="@+id/msg_count_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@id/notification_tv"
-        android:layout_alignTop="@id/notification_tv"
+        android:layout_alignRight="@id/login_tv"
+        android:layout_alignTop="@id/login_tv"
         android:layout_marginRight="-10.0dip"
         android:layout_marginTop="-10.0dip"
         android:paddingBottom="2.0dip"
