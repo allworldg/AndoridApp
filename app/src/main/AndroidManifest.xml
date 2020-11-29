@@ -17,9 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Zhuangzu">
         <activity
+            android:name=".view.activity.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/Theme.Zhuangzu.NoActionBar"></activity>
+        <activity
             android:name=".view.activity.SettingActivity"
             android:label="@string/title_activity_setting"
-            android:theme="@style/Theme.Zhuangzu.NoActionBar"></activity>
+            android:theme="@style/Theme.Zhuangzu.NoActionBar" />
         <activity android:name=".view.activity.LoginActivity" />
         <activity android:name=".view.activity.MainActivity" />
 

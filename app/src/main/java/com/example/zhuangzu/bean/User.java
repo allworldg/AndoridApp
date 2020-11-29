@@ -2,9 +2,20 @@ package com.example.zhuangzu.bean;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
 
 public class User extends BmobUser {
     String nickName;
+    BmobFile headPicture;
+
+    public BmobFile getHeadPicture() {
+        return headPicture;
+    }
+
+    public void setHeadPicture(BmobFile headPicture) {
+        this.headPicture = headPicture;
+    }
+
 
     public User() {
     }

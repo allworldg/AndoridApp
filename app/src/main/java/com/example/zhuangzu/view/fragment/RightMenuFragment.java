@@ -34,6 +34,7 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("TAG","on resume");
         if(haveLogin(getActivity())){
             fragmentRightMenuBinding.loginTv.setVisibility(View.GONE);
             fragmentRightMenuBinding.tvName.setText(user.getNickName());
@@ -56,6 +57,7 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
             fragmentRightMenuBinding.loginTv.setVisibility(View.GONE);
             fragmentRightMenuBinding.tvName.setText(user.getNickName());
         }
+        Log.d("TAG","on createview");
         return fragmentRightMenuBinding.getRoot();
     }
 
