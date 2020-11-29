@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.example.zhuangzu.R;
 
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -38,6 +40,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_signUp:
                 signUp();
                 break;
+            case R.id.right_slide_close:
+                onBackPressed();
+                break;
             default:
                 break;
         }
@@ -51,8 +56,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         user.setUsername(userName);
         user.setNickName(nickName);
         user.setPassword(password);
-        if(userName.equals("")||nickName.equals("")||password.equals("")){
-            Util.myLog(RegisterActivity.this,"账号，用户名和密码不得为空");
+        if (userName.equals("") || nickName.equals("") || password.equals("")) {
+            Util.myLog(RegisterActivity.this, "账号，用户名和密码不得为空");
             return;
         }
 
@@ -61,11 +66,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             public void done(User user, BmobException e) {
                 if (e == null) {
                     Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                    BmobUser.logOut();//bmob注册函数注册成功后会自动登陆，所以先logout。
+                    RegisterActivity.this.onBackPressed();
                 } else {
-                    Log.d("TAG",e.getMessage());
-                    switch (e.getMessage()){
+                    Log.d("TAG", e.getMessage());
+                    switch (e.getMessage()) {
                         case "username 'test' already taken.":
-                            Util.myLog(RegisterActivity.this,"账号已存在，请重新输入");
+                            Util.myLog(RegisterActivity.this, "账号已存在，请重新输入");
                             break;
                         default:
                             break;

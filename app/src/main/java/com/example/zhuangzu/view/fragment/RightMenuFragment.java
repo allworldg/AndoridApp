@@ -20,6 +20,7 @@ import com.example.zhuangzu.bean.User;
 import com.example.zhuangzu.databinding.FragmentRightMenuBinding;
 import com.example.zhuangzu.view.activity.LoginActivity;
 import com.example.zhuangzu.view.activity.SettingActivity;
+import com.example.zhuangzu.view.activity.UserInformationActivity;
 
 import java.util.ArrayList;
 
@@ -38,9 +39,11 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
         if(haveLogin(getActivity())){
             fragmentRightMenuBinding.loginTv.setVisibility(View.GONE);
             fragmentRightMenuBinding.tvName.setText(user.getNickName());
+            fragmentRightMenuBinding.headPicIv.setOnClickListener(this);
         }else{
             fragmentRightMenuBinding.tvName.setText(" ");
             fragmentRightMenuBinding.loginTv.setVisibility(View.VISIBLE);
+            fragmentRightMenuBinding.headPicIv.setOnClickListener(null);
         }
 
     }
@@ -56,6 +59,7 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
         if(haveLogin(getActivity())){
             fragmentRightMenuBinding.loginTv.setVisibility(View.GONE);
             fragmentRightMenuBinding.tvName.setText(user.getNickName());
+
         }
         Log.d("TAG","on createview");
         return fragmentRightMenuBinding.getRoot();
@@ -74,6 +78,10 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
             case R.id.setting:
                 Intent intent1 = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent1);
+                break;
+            case R.id.headPic_iv:
+                Intent intent2 = new Intent(getActivity(), UserInformationActivity.class);
+                startActivity(intent2);
                 break;
             default:
                 break;

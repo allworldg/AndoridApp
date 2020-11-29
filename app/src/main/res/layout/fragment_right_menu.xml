@@ -35,8 +35,8 @@
         android:orientation="vertical">
 
 
-        <ImageView
-            android:id="@+id/avater_iv"
+        <com.example.zhuangzu.view.CircleImageView
+            android:id="@+id/headPic_iv"
             android:layout_width="90.0dip"
             android:layout_height="90.0dip"
             android:src="@drawable/avater_default" />

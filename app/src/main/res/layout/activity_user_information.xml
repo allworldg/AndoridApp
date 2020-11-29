@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg_color_black"
+    tools:context=".view.activity.UserInformationActivity">
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/right_slide_close"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:scaleType="center"
+            android:src="@drawable/fork" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/user_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70.0dip"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+
+    <com.example.zhuangzu.view.CircleImageView
+        android:id="@+id/headPic_iv"
+        android:layout_width="90.0dip"
+        android:layout_height="90.0dip"
+        android:src="@drawable/avater_default" />
+        
+        <TextView
+            android:id="@+id/tv_name"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25.0dip"
+            android:textColor="#ffffffff"
+            android:textSize="14.0sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="80dp"
+        style="@style/line_item"
+        android:id="@+id/line_item_user"
+        android:layout_below="@id/user_ll">
+        
+        <TextView
+            style="@style/item_textleft"
+            android:text="用户名：">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/rightArrow_changeUser_iv"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/ic_navigate_next_orange_24dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/line_item"
+        android:layout_marginTop="80dp"
+        android:layout_below="@id/line_item_user">
+
+        <TextView
+            style="@style/item_textleft"
+            android:textSize="28sp"
+            android:text="修改密码:">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/rightArrow_changePassword"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/ic_navigate_next_orange_24dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

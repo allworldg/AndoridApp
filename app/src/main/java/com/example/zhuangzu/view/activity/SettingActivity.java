@@ -24,8 +24,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         settingBinding = ActivitySettingBinding.inflate(getLayoutInflater());
         setContentView(settingBinding.getRoot());
-        ActionBar actionBar = getSupportActionBar();
+
         settingBinding.btnLogout.setOnClickListener(this);
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }

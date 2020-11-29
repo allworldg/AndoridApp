@@ -34,4 +34,6 @@
     <color name="article_page_textcolor_selected">#ffad8a5a</color>
     <color name ="login_button">#CD853F</color>
     <color name="myRed">#FF4500</color>
+    <color name="gray">#778899</color>
+    <color name="orange">#FF8C00</color>
 </resources>
