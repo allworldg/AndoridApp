@@ -8,6 +8,15 @@ public class User extends BmobUser {
     String nickName;
     BmobFile headPicture;
 
+    public String getTestString() {
+        return testString;
+    }
+
+    public void setTestString(String testString) {
+        this.testString = testString;
+    }
+
+    String testString;
     public BmobFile getHeadPicture() {
         return headPicture;
     }

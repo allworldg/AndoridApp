@@ -1,16 +1,12 @@
 package com.example.zhuangzu.view.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import com.example.zhuangzu.Util.Util;
 import com.example.zhuangzu.bean.User;
 import com.example.zhuangzu.databinding.ActivityRegisterBinding;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.View;
@@ -18,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.zhuangzu.R;
 
-import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
@@ -56,8 +52,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         user.setUsername(userName);
         user.setNickName(nickName);
         user.setPassword(password);
+        user.setHeadPicture(null);
         if (userName.equals("") || nickName.equals("") || password.equals("")) {
-            Util.myLog(RegisterActivity.this, "账号，用户名和密码不得为空");
+            Util.myToast(RegisterActivity.this, "账号，用户名和密码不得为空");
             return;
         }
 
@@ -72,9 +69,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     Log.d("TAG", e.getMessage());
                     switch (e.getMessage()) {
                         case "username 'test' already taken.":
-                            Util.myLog(RegisterActivity.this, "账号已存在，请重新输入");
+                            Util.myToast(RegisterActivity.this, "账号已存在，请重新输入");
                             break;
-                        default:
+                        default:Util.myToast(RegisterActivity.this,e.getMessage());
                             break;
                     }
                 }

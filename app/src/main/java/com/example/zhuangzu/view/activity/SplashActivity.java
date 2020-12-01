@@ -1,9 +1,11 @@
 package com.example.zhuangzu.view.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.animation.Animator;
@@ -11,9 +13,15 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -24,30 +32,27 @@ import cn.bmob.v3.Bmob;
 public class SplashActivity extends AppCompatActivity {
     private ActivitySplashBinding spBinding;
     private static long mLastClickTime;
-    private static int REQUEST_PERMISSION_CODE = 1;
-    /**
-     * 需要进行检测的权限数组
-     */
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         spBinding = ActivitySplashBinding.inflate(getLayoutInflater());
-        ActionBar actionBar = getSupportActionBar();
+        setContentView(spBinding.getRoot());
+        requestMyPermissions();//申请读写权限
+        Bmob.initialize(this, "3fdb919b080c6aec487233c1f30126ab");//bmob初始化
+        ActionBar actionBar = getSupportActionBar();//隐藏系统导航栏
         if (actionBar != null) {
             actionBar.hide();
         }
-        setContentView(spBinding.getRoot());
-        Bmob.initialize(this, "6e33e1bd293e7052ed10a6f000b011cc");
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_PERMISSION_CODE);
-            }
-        }
         ObjectfeiruAnimator();//加载开始图片
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//系统状态栏透明
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
     }
 
     public void ObjectfeiruAnimator() {
@@ -85,15 +90,6 @@ public class SplashActivity extends AppCompatActivity {
         });
     }//加载图
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_PERMISSION_CODE) {
-            for (int i = 0; i < permissions.length; i++) {
-                Log.i("MainActivity", "申请的权限为：" + permissions[i] + ",申请结果：" + grantResults[i]);
-            }
-        }
-    }//申请权限
 
     @Override
     public void onBackPressed() {
@@ -106,6 +102,25 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
+    private void requestMyPermissions() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //没有授权，编写申请权限ggh代码
+            ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+        } else {
+            Log.d("TAG", "requestMyPermissions: 有写SD权限");
+        }
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //没有授权，编写申请权限代码
+            ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+        } else {
+            Log.d("TAG", "requestMyPermissions: 有读SD权限");
+        }
+    }
 
 }
 

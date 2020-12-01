@@ -15,7 +15,9 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.zhuangzu.R;
+import com.example.zhuangzu.Util.Util;
 import com.example.zhuangzu.bean.User;
 import com.example.zhuangzu.databinding.FragmentRightMenuBinding;
 import com.example.zhuangzu.view.activity.LoginActivity;
@@ -31,7 +33,6 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
     private FragmentRightMenuBinding fragmentRightMenuBinding;
     private ArrayList<View> mViewList = new ArrayList<>();
     private static User user;
-
     @Override
     public void onResume() {
         super.onResume();
@@ -40,10 +41,17 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
             fragmentRightMenuBinding.loginTv.setVisibility(View.GONE);
             fragmentRightMenuBinding.tvName.setText(user.getNickName());
             fragmentRightMenuBinding.headPicIv.setOnClickListener(this);
+            if(user.getHeadPicture()!=null){
+                Util.show(getActivity(),user.getHeadPicture().getFileUrl(),fragmentRightMenuBinding.headPicIv);
+            }else{
+                Glide.with(getActivity()).load(R.drawable.avater_default).into(fragmentRightMenuBinding.headPicIv);
+            }
         }else{
             fragmentRightMenuBinding.tvName.setText(" ");
             fragmentRightMenuBinding.loginTv.setVisibility(View.VISIBLE);
             fragmentRightMenuBinding.headPicIv.setOnClickListener(null);
+            Glide.with(getActivity()).load(R.drawable.avater_default).into(fragmentRightMenuBinding.headPicIv);
+
         }
 
     }
@@ -59,7 +67,9 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
         if(haveLogin(getActivity())){
             fragmentRightMenuBinding.loginTv.setVisibility(View.GONE);
             fragmentRightMenuBinding.tvName.setText(user.getNickName());
-
+            if(user.getHeadPicture()!=null){
+                Util.show(getActivity(),user.getHeadPicture().getFileUrl(),fragmentRightMenuBinding.headPicIv);
+            }
         }
         Log.d("TAG","on createview");
         return fragmentRightMenuBinding.getRoot();
@@ -128,7 +138,7 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
      */
     public static boolean haveLogin(Context context){
         if(BmobUser.isLogin()){
-            Toast.makeText(context,"have User",Toast.LENGTH_SHORT).show();
+
             user = BmobUser.getCurrentUser(User.class);
             return true;
         }
