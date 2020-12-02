@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.zhuangzu.R;
+import com.example.zhuangzu.Util.Util;
 import com.example.zhuangzu.bean.User;
 import com.example.zhuangzu.databinding.ActivityLoginBinding;
 import com.example.zhuangzu.databinding.ActivityMainBinding;
@@ -63,6 +65,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                     onBackPressed();
                 } else {
+//                    Log.d("error",e.getMessage());
                     switch (e.getMessage()) {
                         case "username or password incorrect.":
                             Toast.makeText(LoginActivity.this, "账号或密码错误", Toast.LENGTH_SHORT).show();

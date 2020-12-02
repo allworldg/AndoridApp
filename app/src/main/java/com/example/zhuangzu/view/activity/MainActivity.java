@@ -15,6 +15,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mainBinding.getRoot());
         articles = new ArrayList<>();
@@ -90,25 +92,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void initArticles() {
         BmobQuery<Article> query = new BmobQuery<>();
-        for(int i=0;i<4;i++){
-            Article article = new Article();
-            article.setTitle("lakjf");
-            article.setShortContent("lksajf");
-            article.setAuthor("gong");
-            articles.add(article);
-        }
-//        query.findObjects(new FindListener<Article>() {
-//            @Override
-//            public void done(List<Article> list, BmobException e) {
-//                if (e == null) {
-//                    Message msg = ArticleListHandler.obtainMessage();
-//                    msg.what = 0;
-//                    msg.obj = list;
-//                } else {
-//                    Log.d("ArticleException", e.getMessage());
-//                }
-//            }
-//        });
+
+        query.findObjects(new FindListener<Article>() {
+            @Override
+            public void done(List<Article> list, BmobException e) {
+                if (e == null) {
+                    Message msg = ArticleListHandler.obtainMessage();
+                    msg.what = 0;
+                    msg.obj = list;
+
+                    ArticleListHandler.sendMessage(msg);
+                } else {
+                    Log.d("ArticleException", e.getMessage());
+                }
+            }
+        });
 
     }
 
@@ -118,7 +116,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:
-                    articles =(ArrayList<Article>)msg.obj;
+                    articles.addAll((ArrayList<Article>)msg.obj) ;
+                    Log.d("update","update");
+                    articleAdapter.notifyDataSetChanged();
+
                     break;
                 default:
                     break;
