@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.zhuangzu.R;
 import com.example.zhuangzu.Util.FileUtils;
 import com.example.zhuangzu.Util.Util;
@@ -148,6 +149,7 @@ public class UserInformationActivity extends AppCompatActivity implements View.O
         if(uri.startsWith("http://")){
             uri = uri.replace("http://","https://");
         }
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.avater_default);
         Glide.with(this).load(uri).into(informationBinding.headPicIv);
     }
 }

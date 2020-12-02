@@ -5,13 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.activity.MainActivity">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
+    </androidx.recyclerview.widget.RecyclerView>
     <RelativeLayout
         android:id="@+id/relative_top"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@drawable/shadow"
-        app:layout_constraintTop_toTopOf="parent">
+       >
 
         <ImageView
             android:id="@+id/left_slide"
@@ -36,21 +42,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="单  读"
+            android:text="游 壮 乡"
             android:textColor="@android:color/white" />
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/main_recycle_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical">
-
-        </androidx.recyclerview.widget.RecyclerView>
-    </RelativeLayout>
 </RelativeLayout>

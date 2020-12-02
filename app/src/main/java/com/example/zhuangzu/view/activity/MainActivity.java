@@ -1,39 +1,75 @@
 package com.example.zhuangzu.view.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.zhuangzu.R;
+import com.example.zhuangzu.Util.Util;
+import com.example.zhuangzu.adapter.ArticleAdapter;
+import com.example.zhuangzu.bean.Article;
 import com.example.zhuangzu.databinding.ActivityMainBinding;
 import com.example.zhuangzu.view.fragment.LeftMenuFragment;
 import com.example.zhuangzu.view.fragment.RightMenuFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding mainBinding;
     private LeftMenuFragment leftMenu;
     private RightMenuFragment rightMenu;
     private SlidingMenu slidingMenu;
+    private ArrayList<Article> articles;
     private long mLastClickTime;
+    ArticleAdapter articleAdapter ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mainBinding.getRoot());
-
+        articles = new ArrayList<>();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
-
+        initArticles();//初始化数据
         initMenu();//初始化菜单栏
     }
 
     private void initMenu() {
+        RecyclerView recyclerView = mainBinding.mainRecycleView;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        articleAdapter = new ArticleAdapter(articles);
+        articleAdapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Util.myToast(MainActivity.this, "点击" + position);
+            }
+        });
+        recyclerView.setAdapter(articleAdapter);
+        //设置左右布局
         slidingMenu = new SlidingMenu(this);
         slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
         // 设置触摸屏幕的模式
@@ -52,9 +88,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainBinding.rightSlide.setOnClickListener(this);
     }
 
+    public void initArticles() {
+        BmobQuery<Article> query = new BmobQuery<>();
+        for(int i=0;i<4;i++){
+            Article article = new Article();
+            article.setTitle("lakjf");
+            article.setShortContent("lksajf");
+            article.setAuthor("gong");
+            articles.add(article);
+        }
+//        query.findObjects(new FindListener<Article>() {
+//            @Override
+//            public void done(List<Article> list, BmobException e) {
+//                if (e == null) {
+//                    Message msg = ArticleListHandler.obtainMessage();
+//                    msg.what = 0;
+//                    msg.obj = list;
+//                } else {
+//                    Log.d("ArticleException", e.getMessage());
+//                }
+//            }
+//        });
+
+    }
+
+    private Handler ArticleListHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:
+                    articles =(ArrayList<Article>)msg.obj;
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    };
+
+
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.left_slide:
                 slidingMenu.showMenu();
                 leftMenu.startAnim();

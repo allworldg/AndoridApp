@@ -43,6 +43,7 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
             fragmentRightMenuBinding.headPicIv.setOnClickListener(this);
             if(user.getHeadPicture()!=null){
                 Util.show(getActivity(),user.getHeadPicture().getFileUrl(),fragmentRightMenuBinding.headPicIv);
+
             }else{
                 Glide.with(getActivity()).load(R.drawable.avater_default).into(fragmentRightMenuBinding.headPicIv);
             }
