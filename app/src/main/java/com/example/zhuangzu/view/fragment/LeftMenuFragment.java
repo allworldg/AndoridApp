@@ -13,12 +13,13 @@ import android.view.animation.TranslateAnimation;
 
 import com.example.zhuangzu.R;
 import com.example.zhuangzu.databinding.FragmentLeftMenuBinding;
+import com.example.zhuangzu.view.activity.SortActivity;
 
 import java.util.ArrayList;
 
 
 public class LeftMenuFragment extends Fragment implements View.OnClickListener {
-    private FragmentLeftMenuBinding leftMenuBinding;
+    private FragmentLeftMenuBinding binding;
     private ArrayList<View> viewArrayList;
     public LeftMenuFragment() {
         // Required empty public constructor
@@ -35,17 +36,29 @@ public class LeftMenuFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        leftMenuBinding = FragmentLeftMenuBinding.inflate(inflater, container, false);
-        leftMenuBinding.homePageTv.setOnClickListener(this);
-        leftMenuBinding.rightSlideClose.setOnClickListener(this);
+        binding = FragmentLeftMenuBinding.inflate(inflater, container, false);
+        binding.homePageTv.setOnClickListener(this);
+        binding.rightSlideClose.setOnClickListener(this);
+        binding.viewTv.setOnClickListener(this);
+        binding.foodTv.setOnClickListener(this);
+        binding.cultureTv.setOnClickListener(this);
         viewArrayList = new ArrayList<>();
         loadView();
-        return leftMenuBinding.getRoot();
+        return binding.getRoot();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.view_tv:
+                SortActivity.actionStart(getActivity(),"1");
+                break;
+            case R.id.culture_tv:
+                SortActivity.actionStart(getActivity(),"2");
+                break;
+            case R.id.food_tv:
+                SortActivity.actionStart(getActivity(),"3");
+                break;
             case R.id.right_slide_close:
                 getActivity().onBackPressed();
                 break;
@@ -57,16 +70,16 @@ public class LeftMenuFragment extends Fragment implements View.OnClickListener {
         }
     }
     private void loadView() {
-        viewArrayList.add(leftMenuBinding.homePageTv);
-        viewArrayList.add(leftMenuBinding.cultureTv);
-        viewArrayList.add(leftMenuBinding.foodTv);
-        viewArrayList.add(leftMenuBinding.viewTv);
+        viewArrayList.add(binding.homePageTv);
+        viewArrayList.add(binding.cultureTv);
+        viewArrayList.add(binding.foodTv);
+        viewArrayList.add(binding.viewTv);
 
     }
 
     public void startAnim() {
-        startIconAnim(leftMenuBinding.search);
-        startIconAnim(leftMenuBinding.rightSlideClose);
+        startIconAnim(binding.search);
+        startIconAnim(binding.rightSlideClose);
         startColumnAnim();
     }
     private void startColumnAnim() {
