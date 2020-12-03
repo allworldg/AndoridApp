@@ -78,19 +78,19 @@
             android:text="首   页" />
 
         <TextView
-            android:id="@+id/words_tv"
+            android:id="@+id/view_tv"
             style="@style/MenuColunmStyle"
             android:layout_marginTop="18.0dip"
             android:text="景   点" />
 
         <TextView
-            android:id="@+id/voice_tv"
+            android:id="@+id/culture_tv"
             style="@style/MenuColunmStyle"
             android:layout_marginTop="18.0dip"
             android:text="文   化" />
 
         <TextView
-            android:id="@+id/video_tv"
+            android:id="@+id/food_tv"
             style="@style/MenuColunmStyle"
             android:layout_marginTop="18.0dip"
             android:text="美   食" />

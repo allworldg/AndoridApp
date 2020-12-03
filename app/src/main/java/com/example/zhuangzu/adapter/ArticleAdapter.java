@@ -1,6 +1,7 @@
 package com.example.zhuangzu.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,8 +73,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.itemView.setTag(position);
         Article article = articles.get(position);
-        holder.tvAuthor.setText(article.getAuthor());
+
         holder.tvContent.setText(article.getShortContent());
+        Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/PMingLiU.ttf");
+        holder.tvTitle.setTypeface(type);
+        holder.tvAuthor.setText(article.getAuthor());
+        holder.tvAuthor.setTypeface(type);
         holder.tvTitle.setText(article.getTitle());
         Glide.with(context).load(article.getPicture().getFileUrl()).into(new SimpleTarget<Drawable>() {
             @Override
