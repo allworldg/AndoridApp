@@ -1,10 +1,13 @@
 package com.example.zhuangzu.view.activity;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.example.zhuangzu.R;
 import com.example.zhuangzu.Util.Util;
@@ -20,9 +23,14 @@ public class PasswordActivity extends AppCompatActivity implements View.OnClickL
     ActivityPasswordBinding passwordBinding;
     BmobUser user;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //注意要清除 FLAG_TRANSLUCENT_STATUS flag
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.black));
         passwordBinding = ActivityPasswordBinding.inflate(getLayoutInflater());
         setContentView(passwordBinding.getRoot());
         passwordBinding.rightSlideClose.setOnClickListener(this);

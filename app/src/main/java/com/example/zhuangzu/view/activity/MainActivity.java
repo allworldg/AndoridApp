@@ -1,6 +1,7 @@
 package com.example.zhuangzu.view.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,12 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -44,10 +49,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private long mLastClickTime;
     ArticleAdapter articleAdapter ;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //注意要清除 FLAG_TRANSLUCENT_STATUS flag
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.black));
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mainBinding.getRoot());
         articles = new ArrayList<>();
@@ -63,11 +72,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RecyclerView recyclerView = mainBinding.mainRecycleView;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        articleAdapter = new ArticleAdapter(articles);
+        articleAdapter = new ArticleAdapter(MainActivity.this,articles);
         articleAdapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Util.myToast(MainActivity.this, "点击" + position);
+                Intent intent = new Intent(MainActivity.this,ContentActivity.class);
+                intent.putExtra("url",articles.get(position).getUrl());
+                startActivity(intent);
             }
         });
         recyclerView.setAdapter(articleAdapter);
