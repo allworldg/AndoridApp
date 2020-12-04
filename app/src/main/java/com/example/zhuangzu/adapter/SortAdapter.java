@@ -33,6 +33,11 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.ViewHolder> im
         this.articles = articles;
         this.context = context;
     }
+
+    public void setArticles(ArrayList<Article> articles) {
+        this.articles = articles;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -53,12 +58,15 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.ViewHolder> im
         Typeface typeface = Typeface.createFromAsset(context.getAssets(),"fonts/PMingLiU.ttf");
         holder.tvAuthor.setTypeface(typeface);
         holder.tvTitle.setTypeface(typeface);
-        Glide.with(context).load(article.getPicture().getFileUrl()).into(new SimpleTarget<Drawable>() {
-            @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                holder.ivTitlePic.setImageDrawable(resource);
-            }
-        });
+        if(article.getPicture()!=null){
+            Glide.with(context).load(article.getPicture().getFileUrl()).into(new SimpleTarget<Drawable>() {
+                @Override
+                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                    holder.ivTitlePic.setImageDrawable(resource);
+                }
+            });
+        }
+
     }
 
     @Override

@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Article> articles;
     private long mLastClickTime;
     ArticleAdapter articleAdapter ;
-
+    private RecyclerView recyclerView;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,19 +66,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (actionBar != null) {
             actionBar.hide();
         }
+        mainBinding.swipeMain.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateArticles();
+                mainBinding.swipeMain.setRefreshing(false);
+            }
+        });
         initArticles();//初始化数据
         initMenu();//初始化菜单栏
     }
 
     private void initMenu() {
-        RecyclerView recyclerView = mainBinding.mainRecycleView;
+        recyclerView = mainBinding.mainRecycleView;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         articleAdapter = new ArticleAdapter(MainActivity.this,articles);
         articleAdapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Util.myToast(MainActivity.this, "点击" + position);
+
                 Intent intent = new Intent(MainActivity.this,ContentActivity.class);
                 intent.putExtra("url",articles.get(position).getUrl());
                 startActivity(intent);
@@ -105,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void initArticles() {
         BmobQuery<Article> query = new BmobQuery<>();
-
         query.findObjects(new FindListener<Article>() {
             @Override
             public void done(List<Article> list, BmobException e) {
@@ -113,9 +120,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Message msg = ArticleListHandler.obtainMessage();
                     msg.what = 0;
                     msg.obj = list;
-
                     ArticleListHandler.sendMessage(msg);
                 } else {
+                    Log.d("ArticleException", e.getMessage());
+                }
+            }
+        });
+    }
+    public void updateArticles() {
+        BmobQuery<Article> query = new BmobQuery<>();
+        query.findObjects(new FindListener<Article>() {
+            @Override
+            public void done(List<Article> list, BmobException e) {
+                if (e == null) {
+                    Message msg = ArticleListHandler.obtainMessage();
+                    msg.what = 1;
+                    msg.obj = list;
+                    ArticleListHandler.sendMessage(msg);
+                } else {
+                    Message msg = ArticleListHandler.obtainMessage();
+                    msg.what = 2;
+                    ArticleListHandler.sendMessage(msg);
                     Log.d("ArticleException", e.getMessage());
                 }
             }
@@ -129,11 +154,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:
-                    articles.addAll((ArrayList<Article>)msg.obj) ;
-                    Log.d("update","update");
+                    articles = (ArrayList<Article>)msg.obj;
+                    articleAdapter.setArticles(articles);
                     articleAdapter.notifyDataSetChanged();
 
                     break;
+                case 1:
+                    articles = (ArrayList<Article>)msg.obj;
+                    articleAdapter.setArticles(articles);
+                    articleAdapter.notifyDataSetChanged();
+                    Util.myToast(MainActivity.this,"刷新成功");
+                    break;
+                case 2:
+                    Util.myToast(MainActivity.this,"刷新失败，请检查网络");
                 default:
                     break;
             }

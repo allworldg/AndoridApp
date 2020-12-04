@@ -36,6 +36,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         this.articles = articles;
     }
 
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivTitle;
         TextView tvTitle;
@@ -80,12 +84,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         holder.tvAuthor.setText(article.getAuthor());
         holder.tvAuthor.setTypeface(type);
         holder.tvTitle.setText(article.getTitle());
-        Glide.with(context).load(article.getPicture().getFileUrl()).into(new SimpleTarget<Drawable>() {
-            @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                holder.ivTitle.setImageDrawable(resource);
-            }
-        });
+        if(article.getPicture()!=null){
+            Glide.with(context).load(article.getPicture().getFileUrl()).into(new SimpleTarget<Drawable>() {
+                @Override
+                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                    holder.ivTitle.setImageDrawable(resource);
+                }
+            });
+        }
+
     }
 
     @Override
