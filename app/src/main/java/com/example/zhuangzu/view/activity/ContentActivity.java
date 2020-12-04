@@ -21,7 +21,7 @@ import android.webkit.WebViewClient;
 import com.example.zhuangzu.R;
 import com.example.zhuangzu.databinding.ActivityContentBinding;
 
-public class ContentActivity extends AppCompatActivity {
+public class ContentActivity extends AppCompatActivity implements View.OnClickListener{
     ActivityContentBinding binding;
     private String detailData;
     @Override
@@ -47,17 +47,23 @@ public class ContentActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-
-//解除数据阻止
-//        webSettings.setBlockNetworkImage(false);
-//        webSettings.setDomStorageEnabled(true);
-
-
         binding.wbview.loadUrl(detailData);
-
+        binding.share.setOnClickListener(this);
     }
 
-    public static void actionStart(Context context,String Url){
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.share:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT,detailData);
+                startActivity(intent);
+        }
+    }
+
+    public static void actionStart(Context context, String Url){
         Intent intent = new Intent(context,ContentActivity.class);
         intent.putExtra("url",Url);
         context.startActivity(intent);
