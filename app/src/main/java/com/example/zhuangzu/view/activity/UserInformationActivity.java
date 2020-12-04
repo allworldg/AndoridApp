@@ -153,7 +153,7 @@ public class UserInformationActivity extends AppCompatActivity implements View.O
 
     public void show(String uri){
         if(uri.startsWith("http://")){
-            uri = uri.replace("http://","https://");
+            uri = uri.replace("http://","https://");//glide不支持http了，所以要替换
         }
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.avater_default);
         Glide.with(this).load(uri).into(informationBinding.headPicIv);

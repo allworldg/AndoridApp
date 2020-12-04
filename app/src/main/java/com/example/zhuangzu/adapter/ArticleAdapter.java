@@ -18,9 +18,12 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.zhuangzu.R;
 import com.example.zhuangzu.bean.Article;
+import com.example.zhuangzu.bean.User;
 import com.example.zhuangzu.databinding.ArticleItemBinding;
 
 import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> implements View.OnClickListener {
     public interface OnItemClickListener {
@@ -77,13 +80,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.itemView.setTag(position);
         Article article = articles.get(position);
-
         holder.tvContent.setText(article.getShortContent());
         Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/PMingLiU.ttf");
         holder.tvTitle.setTypeface(type);
         holder.tvAuthor.setText(article.getAuthor());
         holder.tvAuthor.setTypeface(type);
         holder.tvTitle.setText(article.getTitle());
+
         if(article.getPicture()!=null){
             Glide.with(context).load(article.getPicture().getFileUrl()).into(new SimpleTarget<Drawable>() {
                 @Override
@@ -92,6 +95,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
                 }
             });
         }
+
+
 
     }
 
@@ -103,4 +108,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
     }
+
+
 }

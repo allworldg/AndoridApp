@@ -16,9 +16,10 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.Zhuangzu">
-        <activity android:name=".view.activity.SortActivity"></activity>
+        android:theme="@style/Theme.Zhuangzu"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".view.activity.LikeActivity"></activity>
+        <activity android:name=".view.activity.SortActivity" />
         <activity android:name=".view.activity.ContentActivity" />
         <activity android:name=".view.activity.PasswordActivity" />
         <activity android:name=".view.activity.UserInformationActivity" />

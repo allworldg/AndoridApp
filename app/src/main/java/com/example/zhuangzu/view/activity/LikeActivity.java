@@ -18,50 +18,36 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.HeaderViewListAdapter;
+import android.widget.Adapter;
+import android.widget.LinearLayout;
 
 import com.example.zhuangzu.R;
 import com.example.zhuangzu.Util.Util;
-import com.example.zhuangzu.adapter.ArticleAdapter;
-import com.example.zhuangzu.adapter.SortAdapter;
+import com.example.zhuangzu.adapter.likeAdapter;
 import com.example.zhuangzu.bean.Article;
-import com.example.zhuangzu.databinding.ActivitySortBinding;
-import com.example.zhuangzu.view.fragment.LeftMenuFragment;
-import com.example.zhuangzu.view.fragment.RightMenuFragment;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.example.zhuangzu.bean.User;
+import com.example.zhuangzu.databinding.ActivityLikeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import io.reactivex.internal.operators.observable.ObservableRefCount;
 
-public class SortActivity extends AppCompatActivity {
-    ActivitySortBinding binding;
-    private String type;//;文章分类
-    private SortAdapter sortAdapter;
+public class LikeActivity extends AppCompatActivity {
+    ActivityLikeBinding binding;
+    private likeAdapter likeAdapter;
     private ArrayList<Article> articles;
     private RecyclerView recyclerView;
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySortBinding.inflate(getLayoutInflater());
-        type = getIntent().getStringExtra("type");
+        binding = ActivityLikeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.swipeSort.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        updateArticles(type);
-                        binding.swipeSort.setRefreshing(false);
-                    }
-                }
-        );
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         //注意要清除 FLAG_TRANSLUCENT_STATUS flag
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -71,41 +57,48 @@ public class SortActivity extends AppCompatActivity {
             actionBar.hide();
         }
         initMenu();
-        initArticles(type);
+        initArticles();
+        binding.swipeSort.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        updateArticles();
+                        binding.swipeSort.setRefreshing(false);
+                    }
+                }
+        );
 
 
     }
-
-    private void initMenu() {
-        recyclerView = binding.sortRecycle;
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
+    public void initMenu(){
         articles = new ArrayList<>();
-        sortAdapter = new SortAdapter(SortActivity.this, articles);
-        sortAdapter.setOnItemClickListener(new SortAdapter.OnItemClickListener() {
+        recyclerView = binding.likeRecycle;
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(manager);
+        likeAdapter = new likeAdapter(LikeActivity.this,articles);
+        likeAdapter.setOnItemClickListener(new likeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ContentActivity.actionStart(SortActivity.this, articles.get(position).getUrl()
-                        ,articles.get(position).getObjectId());
+                ContentActivity.actionStart(LikeActivity.this,articles.get(position).getUrl()
+                ,articles.get(position).getObjectId());
             }
         });
-        recyclerView.setAdapter(sortAdapter);
-
 
     }
-
-    public void initArticles(String type) {
+    //初始化数据
+    public void initArticles(){
         BmobQuery<Article> query = new BmobQuery<>();
-        query.addWhereEqualTo("type", type);
+        User user = BmobUser.getCurrentUser(User.class);
+        query.addWhereRelatedTo("mLike",new BmobPointer(user));
         query.findObjects(new FindListener<Article>() {
             @Override
             public void done(List<Article> list, BmobException e) {
-                if (e == null) {
-                    Message msg = ArticleListHandler.obtainMessage();
-                    msg.what = 0;
-                    msg.obj = list;
-                    ArticleListHandler.sendMessage(msg);
-                } else {
+                if(e==null){
+                        Message msg = ArticleListHandler.obtainMessage();
+                        msg.what = 0;
+                        msg.obj = list;
+                        ArticleListHandler.sendMessage(msg);
+                }else{
                     Log.d("error", e.getMessage());
                     Message msg = ArticleListHandler.obtainMessage();
                     msg.what = 2;
@@ -114,19 +107,20 @@ public class SortActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void updateArticles(String type) {
-        BmobQuery<Article> query = new BmobQuery<>();//
-        query.addWhereEqualTo("type", type);
+    //刷新更新数据
+    public void updateArticles(){
+        BmobQuery<Article> query = new BmobQuery<>();
+        User user = BmobUser.getCurrentUser(User.class);
+        query.addWhereRelatedTo("mLike",new BmobPointer(user));
         query.findObjects(new FindListener<Article>() {
             @Override
             public void done(List<Article> list, BmobException e) {
-                if (e == null) {
+                if(e==null){
                     Message msg = ArticleListHandler.obtainMessage();
                     msg.what = 1;
                     msg.obj = list;
                     ArticleListHandler.sendMessage(msg);
-                } else {
+                }else{
                     Log.d("error", e.getMessage());
                     Message msg = ArticleListHandler.obtainMessage();
                     msg.what = 2;
@@ -135,26 +129,25 @@ public class SortActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private Handler ArticleListHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case 0:
+                case 0://初始化
                     articles = (ArrayList<Article>) msg.obj;
-                    sortAdapter.setArticles(articles);
-                    sortAdapter.notifyDataSetChanged();
+                    likeAdapter.setArticles(articles);
+                    likeAdapter.notifyDataSetChanged();
                     break;
-                case 1:
+                case 1://刷新
                     articles = (ArrayList<Article>) msg.obj;
-                    sortAdapter.setArticles(articles);
-                    sortAdapter.notifyDataSetChanged();
-                    Util.myToast(SortActivity.this, "刷新成功");
+                    likeAdapter.setArticles(articles);
+                    likeAdapter.notifyDataSetChanged();
+                    Util.myToast(LikeActivity.this, "刷新成功");
                     break;
-                case 2:
-                    Util.myToast(SortActivity.this, "由于网络原因，刷新失败");
+                case 2://刷新失败
+                    Util.myToast(LikeActivity.this, "由于网络原因，刷新失败");
                 default:
                     break;
             }
@@ -162,9 +155,8 @@ public class SortActivity extends AppCompatActivity {
         }
     };
 
-    public static void actionStart(Context context, String type) {
-        Intent intent = new Intent(context, SortActivity.class);
-        intent.putExtra("type", type);
+    public static void actionStart(Context context){
+        Intent intent = new Intent(context,LikeActivity.class);
         context.startActivity(intent);
     }
 }

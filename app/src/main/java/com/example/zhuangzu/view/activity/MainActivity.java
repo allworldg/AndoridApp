@@ -85,10 +85,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         articleAdapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
-                Intent intent = new Intent(MainActivity.this,ContentActivity.class);
-                intent.putExtra("url",articles.get(position).getUrl());
-                startActivity(intent);
+                ContentActivity.actionStart(MainActivity.this,articles.get(position).getUrl()
+                        ,articles.get(position).getObjectId());
             }
         });
         recyclerView.setAdapter(articleAdapter);

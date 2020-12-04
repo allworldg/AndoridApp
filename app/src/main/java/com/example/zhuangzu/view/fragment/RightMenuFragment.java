@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.zhuangzu.R;
 import com.example.zhuangzu.Util.Util;
 import com.example.zhuangzu.bean.User;
 import com.example.zhuangzu.databinding.FragmentRightMenuBinding;
+import com.example.zhuangzu.view.activity.LikeActivity;
 import com.example.zhuangzu.view.activity.LoginActivity;
 import com.example.zhuangzu.view.activity.SettingActivity;
 import com.example.zhuangzu.view.activity.UserInformationActivity;
@@ -30,7 +30,7 @@ import cn.bmob.v3.BmobUser;
 
 
 public class RightMenuFragment extends Fragment implements View.OnClickListener {
-    private FragmentRightMenuBinding fragmentRightMenuBinding;
+    private FragmentRightMenuBinding binding;
     private ArrayList<View> mViewList = new ArrayList<>();
     private static User user;
     @Override
@@ -38,20 +38,20 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
         super.onResume();
         Log.d("TAG","on resume");
         if(haveLogin(getActivity())){
-            fragmentRightMenuBinding.loginTv.setVisibility(View.GONE);
-            fragmentRightMenuBinding.tvName.setText(user.getNickName());
-            fragmentRightMenuBinding.headPicIv.setOnClickListener(this);
+            binding.loginTv.setVisibility(View.GONE);
+            binding.tvName.setText(user.getNickName());
+            binding.headPicIv.setOnClickListener(this);
             if(user.getHeadPicture()!=null){
-                Util.show(getActivity(),user.getHeadPicture().getFileUrl(),fragmentRightMenuBinding.headPicIv);
+                Util.show(getActivity(),user.getHeadPicture().getFileUrl(), binding.headPicIv);
 
             }else{
-                Glide.with(getActivity()).load(R.drawable.avater_default).into(fragmentRightMenuBinding.headPicIv);
+                Glide.with(getActivity()).load(R.drawable.avater_default).into(binding.headPicIv);
             }
         }else{
-            fragmentRightMenuBinding.tvName.setText(" ");
-            fragmentRightMenuBinding.loginTv.setVisibility(View.VISIBLE);
-            fragmentRightMenuBinding.headPicIv.setOnClickListener(null);
-            Glide.with(getActivity()).load(R.drawable.avater_default).into(fragmentRightMenuBinding.headPicIv);
+            binding.tvName.setText(" ");
+            binding.loginTv.setVisibility(View.VISIBLE);
+            binding.headPicIv.setOnClickListener(null);
+            Glide.with(getActivity()).load(R.drawable.avater_default).into(binding.headPicIv);
 
         }
 
@@ -60,20 +60,21 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        fragmentRightMenuBinding = FragmentRightMenuBinding.inflate(inflater, container, false);
+        binding = FragmentRightMenuBinding.inflate(inflater, container, false);
         loadView();
-        fragmentRightMenuBinding.rightSlideClose.setOnClickListener(this);
-        fragmentRightMenuBinding.loginTv.setOnClickListener(this);
-        fragmentRightMenuBinding.setting.setOnClickListener(this);
+        binding.rightSlideClose.setOnClickListener(this);
+        binding.loginTv.setOnClickListener(this);
+        binding.setting.setOnClickListener(this);
+        binding.favoritesTv.setOnClickListener(this);
         if(haveLogin(getActivity())){
-            fragmentRightMenuBinding.loginTv.setVisibility(View.GONE);
-            fragmentRightMenuBinding.tvName.setText(user.getNickName());
+            binding.loginTv.setVisibility(View.GONE);
+            binding.tvName.setText(user.getNickName());
             if(user.getHeadPicture()!=null){
-                Util.show(getActivity(),user.getHeadPicture().getFileUrl(),fragmentRightMenuBinding.headPicIv);
+                Util.show(getActivity(),user.getHeadPicture().getFileUrl(), binding.headPicIv);
             }
         }
         Log.d("TAG","on createview");
-        return fragmentRightMenuBinding.getRoot();
+        return binding.getRoot();
     }
 
     @Override
@@ -94,21 +95,28 @@ public class RightMenuFragment extends Fragment implements View.OnClickListener 
                 Intent intent2 = new Intent(getActivity(), UserInformationActivity.class);
                 startActivity(intent2);
                 break;
+            case R.id.favorites_tv:
+                if(!BmobUser.isLogin()){
+                    Util.myToast(getActivity(),"请先登陆");
+                }else{
+                    LikeActivity.actionStart(getActivity());
+                }
+                break;
             default:
                 break;
         }
     }
 
     private void loadView() {
-        mViewList.add(fragmentRightMenuBinding.loginTv);
-        mViewList.add(fragmentRightMenuBinding.favoritesTv);
-        mViewList.add(fragmentRightMenuBinding.downloadTv);
-        mViewList.add(fragmentRightMenuBinding.noteTv);
+        mViewList.add(binding.loginTv);
+        mViewList.add(binding.favoritesTv);
+        mViewList.add(binding.downloadTv);
+        mViewList.add(binding.noteTv);
     }
 
     public void startAnim() {
-        startIconAnim(fragmentRightMenuBinding.rightSlideClose);
-        startIconAnim(fragmentRightMenuBinding.setting);
+        startIconAnim(binding.rightSlideClose);
+        startIconAnim(binding.setting);
         startColumnAnim();
     }
 

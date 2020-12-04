@@ -6,24 +6,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.example.zhuangzu.R;
+import com.example.zhuangzu.Util.Util;
+import com.example.zhuangzu.bean.Article;
+import com.example.zhuangzu.bean.User;
 import com.example.zhuangzu.databinding.ActivityContentBinding;
+
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobRelation;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class ContentActivity extends AppCompatActivity implements View.OnClickListener{
     ActivityContentBinding binding;
     private String detailData;
+    private String contentId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +47,7 @@ public class ContentActivity extends AppCompatActivity implements View.OnClickLi
         }
         setContentView(binding.getRoot());
         detailData = getIntent().getStringExtra("url");
-
+        contentId = getIntent().getStringExtra("contentId");
         binding.wbview.setWebViewClient(new WebViewClient());
         WebSettings webSettings = binding.wbview.getSettings();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -49,6 +55,7 @@ public class ContentActivity extends AppCompatActivity implements View.OnClickLi
         }
         binding.wbview.loadUrl(detailData);
         binding.share.setOnClickListener(this);
+        binding.favorite.setOnClickListener(this);
     }
 
     @Override
@@ -60,12 +67,51 @@ public class ContentActivity extends AppCompatActivity implements View.OnClickLi
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT,detailData);
                 startActivity(intent);
+                break;
+            case R.id.favorite:
+                if(!BmobUser.isLogin()){
+                    Util.myToast(ContentActivity.this,"请先登陆");
+                }else{
+                    addCollect(contentId);
+                }
         }
     }
 
-    public static void actionStart(Context context, String Url){
+    public static void actionStart(Context context, String Url,String contentId){
         Intent intent = new Intent(context,ContentActivity.class);
         intent.putExtra("url",Url);
+        intent.putExtra("contentId",contentId);
         context.startActivity(intent);
+    }
+    //双向添加关系
+    public void addCollect(String contentId){
+        User user = BmobUser.getCurrentUser(User.class);//先在article里面添加指向user的关系
+        Article article = new Article();
+        article.setObjectId(contentId);
+        BmobRelation relation = new BmobRelation(); //暂时不用，打算用来显示文章被喜欢的数量
+        relation.add(user);
+        article.setLike(relation);
+        article.update(new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if(e==null){
+                    Util.myToast(ContentActivity.this,"收藏成功");
+                }else{
+                    Log.d("error","更新失败"+e.getMessage());
+                }
+            }
+        });
+        BmobRelation relation1 = new BmobRelation();
+        relation1.add(article);
+        user.setmLike(relation1);
+        user.update(new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if(e!=null){
+                    Log.d("error","更新失败"+e.getMessage());
+                }
+            }
+        });
+
     }
 }
