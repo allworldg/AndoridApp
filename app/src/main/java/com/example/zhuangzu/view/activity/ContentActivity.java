@@ -6,13 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.example.zhuangzu.R;
@@ -38,13 +41,20 @@ public class ContentActivity extends AppCompatActivity {
         }
         setContentView(binding.getRoot());
         detailData = getIntent().getStringExtra("url");
-        binding.wbview.loadUrl(detailData);
+
         binding.wbview.setWebViewClient(new WebViewClient());
         WebSettings webSettings = binding.wbview.getSettings();
-        webSettings.setSupportZoom(true); // 可以缩放
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);//把html中的内容放大webview等宽的一列中
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setLoadWithOverviewMode(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
+//解除数据阻止
+//        webSettings.setBlockNetworkImage(false);
+//        webSettings.setDomStorageEnabled(true);
+
+
+        binding.wbview.loadUrl(detailData);
+
     }
 
     public static void actionStart(Context context,String Url){
