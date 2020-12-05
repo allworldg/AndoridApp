@@ -103,7 +103,7 @@ public class ContentActivity extends AppCompatActivity implements View.OnClickLi
         });
         BmobRelation relation1 = new BmobRelation();
         relation1.add(article);
-        user.setmLike(relation1);
+        user.setMlike(relation1);
         user.update(new UpdateListener() {
             @Override
             public void done(BmobException e) {
