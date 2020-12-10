@@ -10,6 +10,15 @@ public class Article  extends BmobArticle {
     private String  shortContent;//封面简介
     private BmobRelation like;
 
+    public BmobRelation getMlike() {
+        return mlike;
+    }
+
+    public void setMlike(BmobRelation mlike) {
+        this.mlike = mlike;
+    }
+
+    private BmobRelation mlike;
 
     public BmobRelation getLike() {
         return like;

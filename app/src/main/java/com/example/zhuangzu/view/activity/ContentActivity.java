@@ -85,7 +85,9 @@ public class ContentActivity extends AppCompatActivity implements View.OnClickLi
     }
     //双向添加关系
     public void addCollect(String contentId){
-        User user = BmobUser.getCurrentUser(User.class);//先在article里面添加指向user的关系
+//        User user = BmobUser.getCurrentUser(User.class);//先在article里面添加指向user的关系
+        User user = new User();
+        user.setObjectId(BmobUser.getCurrentUser(User.class).getObjectId());
         Article article = new Article();
         article.setObjectId(contentId);
         BmobRelation relation = new BmobRelation(); //暂时不用，打算用来显示文章被喜欢的数量

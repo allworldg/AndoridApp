@@ -83,13 +83,14 @@ public class LikeActivity extends AppCompatActivity {
                 ,articles.get(position).getObjectId());
             }
         });
+        recyclerView.setAdapter(likeAdapter);
 
     }
     //初始化数据
     public void initArticles(){
         BmobQuery<Article> query = new BmobQuery<>();
         User user = BmobUser.getCurrentUser(User.class);
-        query.addWhereRelatedTo("mLike",new BmobPointer(user));
+        query.addWhereRelatedTo("mlike",new BmobPointer(user));
         query.findObjects(new FindListener<Article>() {
             @Override
             public void done(List<Article> list, BmobException e) {
@@ -111,7 +112,7 @@ public class LikeActivity extends AppCompatActivity {
     public void updateArticles(){
         BmobQuery<Article> query = new BmobQuery<>();
         User user = BmobUser.getCurrentUser(User.class);
-        query.addWhereRelatedTo("mLike",new BmobPointer(user));
+        query.addWhereRelatedTo("mlike",new BmobPointer(user));
         query.findObjects(new FindListener<Article>() {
             @Override
             public void done(List<Article> list, BmobException e) {

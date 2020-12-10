@@ -4,10 +4,11 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobRelation;
 
-public class User extends   BmobUser {
+public class User extends BmobUser {
     String nickName;//昵称
     BmobFile headPicture;//头像
     BmobRelation mlike;//收藏的任务，一对多关系
+
     public BmobRelation getMlike() {
         return mlike;
     }
@@ -16,15 +17,6 @@ public class User extends   BmobUser {
         this.mlike = mlike;
     }
 
-    public String getTestString() {
-        return testString;
-    }
-
-    public void setTestString(String testString) {
-        this.testString = testString;
-    }
-
-    String testString;
     public BmobFile getHeadPicture() {
         return headPicture;
     }
@@ -34,12 +26,6 @@ public class User extends   BmobUser {
     }
 
 
-    public User() {
-    }
-
-    public User(String nickName) {
-        this.nickName = nickName;
-    }
 
     public String getNickName() {
         return nickName;
